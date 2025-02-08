@@ -1,0 +1,7 @@
+urls:
+    - name: stable-diffusion-webui
+      url: http://127.0.0.1:7861/sdapi/v1/txt2img
+      max_queue_size: 5
+    - name: sdxl
+      url: http://127.0.0.1:7862/api/txt2img
+      max_queue_size: 5

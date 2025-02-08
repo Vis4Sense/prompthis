@@ -1,1 +1,0 @@
-import{l as e,e as t,f as s,g as o}from"./index-3db1096c.js";const _={},c={class:"about"},n=o("h1",null,"This is an about page",-1),a=[n];function i(r,l){return t(),s("div",c,a)}const d=e(_,[["render",i]]);export{d as default};

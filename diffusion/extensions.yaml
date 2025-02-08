@@ -1,0 +1,80 @@
+extensions:
+  - name: preprocess
+    task: image_encoding
+    url: http://127.0.0.1:5707/image_encoding
+    trigger: text2image_creation
+    trigger_time: post_request
+    trigger_order: 1
+    input:
+      - attribute: log/image
+        fileNaming: log/image-json
+        filter:
+          type: unprocessed
+          params:
+            name: preprocess
+            task: image_encoding
+    output: map-log/image-json
+  - name: preprocess
+    task: image_projection
+    url: http://127.0.0.1:5707/image_projection
+    trigger: text2image_creation
+    trigger_time: post_request
+    trigger_order: 2
+    input:
+      - attribute: preprocess/image_encoding
+        fileNaming: log/image-json
+        filter:
+          type: all
+          params:
+            name: preprocess
+            task: image_encoding
+      - attribute: preprocess/image_projection
+        fileNaming: log/prompt-json
+        filter:
+          type: latest
+          params:
+            name: preprocess
+            task: image_projection
+    output: latest-log/prompt-json
+  - name: preprocess
+    task: text_encoding
+    url: http://127.0.0.1:5707/text_encoding
+    trigger: text2image_creation
+    trigger_time: post_request
+    trigger_order: 3
+    input:
+      - attribute: log/setting
+        fileNaming: log/setting-json
+        filter:
+          type: unprocessed
+          params:
+            name: preprocess
+            task: text_encoding
+    output: map-log/setting-json
+  - name: preprocess
+    task: text_projection
+    url: http://127.0.0.1:5707/text_projection
+    trigger: text2image_creation
+    trigger_time: post_request
+    trigger_order: 4
+    input:
+      - attribute: log/log
+        fileNaming: log
+        filter:
+          type: all
+          params: none
+      - attribute: preprocess/text_encoding
+        fileNaming: log/setting-json
+        filter:
+          type: all
+          params:
+            name: preprocess
+            task: text_encoding
+      - attribute: preprocess/image_projection
+        fileNaming: log/prompt-json
+        filter:
+          type: latest
+          params:
+            name: preprocess
+            task: image_projection
+    output: latest-log/prompt-json
